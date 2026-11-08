@@ -2,10 +2,7 @@ import csv
 from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
-EXPECTED_HEADERS = [
-    "case_id", "type", "input", "expected_category",
-    "expected_urgency", "expected_behaviour"
-]
+EXPECTED_HEADERS = ["case_id", "type", "input", "expected_category", "expected_urgency", "expected_behaviour"]
 
 def load_cases():
     with (ROOT / "prompt_cases.csv").open(encoding="utf-8", newline="") as f:
@@ -30,4 +27,4 @@ def test_prompt_contains_safety_and_no_invention_rules():
     prompt = (ROOT / "prompts" / "complaint_sorter.txt").read_text(encoding="utf-8").lower()
     assert "do not invent" in prompt
     assert "critical" in prompt
-    assert "human review" in prompt
+    assert "needs_human_review" in prompt
