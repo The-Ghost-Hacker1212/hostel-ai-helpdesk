@@ -30,19 +30,9 @@ def classify_complaint(message: str) -> ComplaintResult:
     client = OpenAI(api_key=api_key)
     response = client.chat.completions.create(
         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-        messages=[
-            {"role": "system", "content": load_prompt()},
-            {"role": "user", "content": message}
-        ],
-        response_format={
-            "type": "json_schema",
-            "json_schema": {
-                "name": "complaint_result",
-                "strict": True,
-                "schema": ComplaintResult.model_json_schema()
-            }
-        },
-        temperature=0
+        messages=[{"role": "system", "content": load_prompt()}, {"role": "user", "content": message}],
+        response_format={"type": "json_schema", "json_schema": {"name": "complaint_result", "strict": True, "schema": ComplaintResult.model_json_schema()}},
+        temperature=0,
     )
     raw = response.choices[0].message.content
     if not raw:
@@ -52,17 +42,10 @@ def classify_complaint(message: str) -> ComplaintResult:
 st.set_page_config(page_title="Hostel Helpdesk AI", page_icon="🏠", layout="centered")
 st.title("🏠 Hostel Helpdesk AI")
 st.caption("Turn a student's complaint into a validated category, urgency and next action.")
-
 with st.expander("What this demo does"):
     st.write("The model classifies a complaint into a fixed category and urgency. The app validates the returned structure before displaying it.")
-    st.write("Critical or uncertain complaints are flagged for human review. The model does not invent policies, deadlines, compensation or contact details.")
-
-message = st.text_area(
-    "Describe your hostel issue",
-    placeholder="Example: Paani kal raat se nahi aa raha, bathroom use nahi kar paa rahe.",
-    height=130
-)
-
+    st.write("Critical or uncertain complaints are flagged for human review. The model must not invent policies, deadlines, compensation or contact details.")
+message = st.text_area("Describe your hostel issue", placeholder="Example: Paani kal raat se nahi aa raha, bathroom use nahi kar paa rahe.", height=130)
 if st.button("Classify complaint", type="primary", use_container_width=True):
     if not message.strip():
         st.warning("Please enter a complaint first.")

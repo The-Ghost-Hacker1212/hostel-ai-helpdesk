@@ -1,60 +1,23 @@
 # Hostel Helpdesk AI
 
-A small hackathon demo that classifies hostel complaints into a fixed category and urgency, then suggests a safe next action.
+A demo that classifies hostel complaints into a fixed category and urgency, summarizes the issue, and suggests a safe next action.
 
 ## Features
-- Supports common English and Hinglish complaint text.
-- Uses fixed category and urgency values.
-- Requests schema-constrained JSON from the language model.
-- Validates the model response with Pydantic before showing it.
-- Flags unclear, unsafe and critical complaints for human review.
-- Includes 8 test cases covering normal, edge and unsafe inputs.
+- Classifies complaints into food, water, electricity, cleanliness, maintenance, security, internet, or other.
+- Assigns low, medium, high, or critical urgency.
+- Supports common Hinglish and messy inputs.
+- Validates structured model output with Pydantic.
+- Flags unclear and safety-related complaints for human review.
+- Includes eight prompt test cases and automated structural tests.
 
 ## Run locally
+1. Use Python 3.10+.
+2. Run `pip install -r requirements.txt`.
+3. Copy `.env.example` to `.env` and add your own API key.
+4. Run `streamlit run app.py`.
+5. Run checks with `pip install pytest && python -m pytest -q`.
 
-1. Install Python 3.10 or newer.
-2. Create and activate a virtual environment.
-3. Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Copy `.env.example` to `.env` and add your own API key.
-5. Start the app:
-
-   ```bash
-   streamlit run app.py
-   ```
-
-Do not commit `.env` or expose your API key in screenshots or a public repository.
-
-## Test the case list
-
-```bash
-python -m pytest
-```
-
-Then paste each input from `prompt_cases.csv` into the app and save the actual JSON result. Compare the result with the expected behaviour; mark each run PASS or FAIL. Do not claim tests passed until you have run them.
-
-## Repository structure
-
-```text
-hostel-ai-helpdesk/
-├── app.py
-├── prompts/
-│   └── complaint_sorter.txt
-├── prompt_cases.csv
-├── tests/
-│   └── test_cases.py
-├── .env.example
-├── .gitignore
-├── requirements.txt
-└── test_results_template.csv
-```
+Never commit `.env` or expose your API key. Live model test outputs must be recorded after running the app; the repository does not claim the model tests have already been executed.
 
 ## Limitations
-- This is a demo, not an official college complaint channel.
-- The model can make mistakes; staff must review critical or unclear cases.
-- It does not send complaints, contact staff, or create official tickets.
-- Configure the model and API key before the live demo.
+This is a demo, not an official college complaint channel. Staff must review critical or unclear cases. The app does not send complaints or create official tickets.
